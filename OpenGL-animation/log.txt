@@ -1,0 +1,8 @@
+file created
+registertrack loaded sucessfully...
+Calling Opening initialize
+Display Bird Flying S1
+Display Robot and nature S4
+Display closing S5 initialized
+create
+closed

@@ -1,0 +1,10 @@
+#include "resource.h"
+
+MYICON				ICON	Resources/app.ico
+BG_TEXTURE			BITMAP	Resources/Textures/background.bmp
+GROUND_TEXTURE		BITMAP	Resources/Textures/ground.bmp
+ROBOT_FACE			BITMAP	Resources/Textures/RobotFace.bmp
+ROBOT_BODY			BITMAP	Resources/Textures/RobotBodySide.bmp
+ROBOT_BODY_DARK		BITMAP	Resources/Textures/RobotBodySideDark.bmp
+ROBOT_FRONT			BITMAP	Resources/Textures/RobotBody.bmp
+
