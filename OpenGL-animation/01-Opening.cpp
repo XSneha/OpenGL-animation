@@ -14,8 +14,9 @@ const GLfloat Camera_fDeltaMultiplier = 5.5f;
 // Camera
 const GLfloat Camera_fZZoomEnd = 50.0f;
 const GLfloat Camera_fZZoomStart = 90.0f;
-const GLfloat Camera_fDeltaEyeAngle = 0.0005f * Camera_fDeltaMultiplier;
-const GLfloat Camera_fZoomInDistance = 0.0006f * Camera_fDeltaMultiplier;
+const GLfloat Camera_fZZoomOutStop = 70.0f;
+const GLfloat Camera_fDeltaEyeAngle = 0.005f * Camera_fDeltaMultiplier;
+const GLfloat Camera_fZoomInDistance = 0.006f * Camera_fDeltaMultiplier;
 
 GLfloat Camera_fEye[3] = { 0.0f, 0.0f, 160.0f };
 GLfloat Camera_fCenter[3] = { 0.0f, 0.0f, 0.0f };
@@ -33,9 +34,14 @@ bool gb_display_text = true;
 COLOR cDarkGold = { 0.9f, 0.7f, 0.0f };
 COLOR cLightGold = { 1.0f, 0.8f, 0.0f };
 
+GLuint sky_texture;
+
 void InitializeOpening(void)
 {
 	fprintf(gpFile, "Calling Opening initialize\n");
+	LoadGLTextures(&sky_texture, MAKEINTRESOURCE(SKY_TEXTURE));
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void DisplayOpening(void)
@@ -105,10 +111,55 @@ void UpdateOpening(void)
 // DrawRoom()
 void DrawRoom()
 {
-	void DrawDoor(void);
+	//void DrawDoor(void);
 
 	glScalef(50.0f, 30.0f, 30.0f);
 	glTranslatef(0.0f,-0.3f,-0.0f);
+
+	glBindTexture(GL_TEXTURE_2D, sky_texture);
+	glBegin(GL_QUADS);
+	// Back
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glTexCoord2d(0.0f, 1.0f);
+	glVertex3f(-1.0f, 1.5f, -1.0f);
+	glTexCoord2d(1.0f, 1.0f);
+	glVertex3f(1.0f, 1.5f, -1.0f);
+	glTexCoord2d(1.0f, 0.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f);
+	glTexCoord2d(0.0f, 0.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//gallary 
+	glBegin(GL_QUADS);
+	// Back
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(-1.0f, 0.0f, -1.0f);
+	glVertex3f(1.0f, 0.0f, -1.0f);
+	glVertex3f(1.0f, 0.1f, -1.0f);
+	glVertex3f(-1.0f, 0.1f, -1.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	// Back
+	GLfloat start_bar = -1.0f;
+	for (int i = 0; i < 10; i++) {
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(start_bar * (i*0.1), 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1) + 0.002, 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1) + 0.002, -1.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1), -1.0f, -1.0f);
+	}
+	start_bar = 1.0f;
+	for (int i = 0; i < 10; i++) {
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(start_bar * (i * 0.1), 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1) + 0.002, 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1) + 0.002, -1.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1), -1.0f, -1.0f);
+	}
+	glEnd();
 
 	glBegin(GL_QUADS);
 	// Right
@@ -118,13 +169,7 @@ void DrawRoom()
 	glVertex3f(1.0f, -1.0f, 2.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
 
-	// Back
-	glColor3f(1.0f, 0.25f, 0.25f);
-	glVertex3f(-1.0f, 1.5f, -1.0f);
-	glVertex3f(1.0f, 1.5f, -1.0f);
-	glVertex3f(1.0f, -1.0f, -1.0f);
-	glVertex3f(-1.0f, -1.0f, -1.0f);
-
+	
 	// Left
 	glColor3f(0.6f, 0.6f, 0.6f);
 	glVertex3f(-1.0f, 1.5f, 2.0f);
@@ -167,11 +212,11 @@ void DrawRoom()
 	if (!Camera_bDoneCameraZoomIn) {
 		//Front
 		glBegin(GL_QUADS);
-		glColor3f(0.25f, 0.25f, 0.25f);
+		/*glColor3f(0.25f, 0.25f, 0.25f);
 		glVertex3f(-1.0f, 1.5f, 2.0f);
 		glVertex3f(1.0f, 1.5f, 2.0f);
 		glVertex3f(1.0f, -1.0f, 2.0f);
-		glVertex3f(-1.0f, -1.0f, 2.0f);
+		glVertex3f(-1.0f, -1.0f, 2.0f);*/
 
 		//floore outside the room
 		// Bottom
@@ -205,10 +250,11 @@ void DrawRoom()
 
 		glEnd();
 
-		DrawDoor();
+		//DrawDoor();
 	}
 }
 
+/*
 void DrawDoor() {
 	//glScalef(40.0f, 20.0f, 20.0f);
 	//glTranslatef(0.0f, -0.3f, 0.0f);
@@ -238,6 +284,7 @@ void DrawDoor() {
 
 	glEnd();
 }
+*/
 
 void DisplayText(void)
 {

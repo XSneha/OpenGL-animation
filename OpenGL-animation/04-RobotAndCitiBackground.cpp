@@ -1,13 +1,10 @@
 #include "Resources/Headers/Global.h"
 
-GLuint bg_texture;
-GLuint ground_texture;
-
 GLfloat angle = 0.00f;
+bool g_cut_scene1 = false;
 
 // Display robot comming out from the city
 void DisplayRobotS3(void) {
-	fprintf(gpFile, "Display Robot with skyline in backgroud S3\n");
 
 	void DrawRobot();
 	void DrawTree();
@@ -17,13 +14,20 @@ void DisplayRobotS3(void) {
 	void Skyline(void);
 	//void Update();
 
+	static ULONGLONG timer = GetTickCount64();
+	ULONGLONG timer_end = GetTickCount64();
+
+	if ((timer_end - timer) >= 5000) {
+		g_cut_scene1 = true;
+	}
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	// gluLookAt(0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	// glRotatef(angle, 0.0f, 1.0f, 0.0f);
-//	 glRotatef(angle,1.0f,0.0f,0.0f);
+//	glRotatef(angle, 0.0f, 1.0f, 0.0f);
+//	glRotatef(angle,1.0f,0.0f,0.0f);
 //	Box();
 //	Camera();
 
@@ -67,7 +71,7 @@ void DisplayRobotS3(void) {
 	DrawPlant();
 	glPopMatrix();
 
-	glPushMatrix();
+	/*glPushMatrix();
 	glScalef(0.2f, 0.2f, 0.2f);
 	glTranslatef(-1.5f, 0.8f, -40.0f);
 	//	glRotatef(angle, 1.0f, 0.0f, 0.0f);
@@ -93,17 +97,17 @@ void DisplayRobotS3(void) {
 	glTranslatef(3.5f, 0.2f, -7.0f);
 	//	glRotatef(angle, 1.0f, 0.0f, 0.0f);
 	DrawTree();
-	glPopMatrix();
+	glPopMatrix();*/
 
 
-	glPushMatrix();
-	glScalef(0.2f, 0.2f, 0.2f);
-	glTranslatef(-2.7f, 12.2f, -2.0f);
-	glColor3f(1.0f, 1.0f, 1.0f);
+	//glPushMatrix();
+	//glScalef(0.2f, 0.2f, 0.2f);
+	//glTranslatef(-2.7f, 12.2f, -2.0f);
+	//glColor3f(1.0f, 1.0f, 1.0f);
 	//	glRotatef(angle, 1.0f, 0.0f, 0.0f);
-	DrawTree();
-	glPopMatrix();
-	//	DrawTree();
+	//DrawTree();
+	//glPopMatrix();
+	//DrawTree();
 	//DrawBird();
 }
 
@@ -115,6 +119,13 @@ void UpdateRobotS3(void) {
 	}
 
 	UpdateFlyingAction();
+	
+
+	if (g_cut_scene1 == true) {
+		gbRenderScene_04 = false;
+		gbRenderScene_06 = true;
+	}
+
 	/*lightAngle0 = lightAngle0 + 0.2f;
 	if (lightAngle0 >= 360.0f) {
 		lightAngle0 = 0.0f;
@@ -122,11 +133,11 @@ void UpdateRobotS3(void) {
 }
 
 void InitalizeRobotS3(void) {
-
-
+	fprintf(gpFile, "Display Robot with skyline in backgroud S3\n");
 }
 
 void Skyline(void) {
+
 	GLfloat bgHeight = 40.0f;
 	GLfloat bgWidth = 25.0f;
 	GLfloat gLength = 10.0f;

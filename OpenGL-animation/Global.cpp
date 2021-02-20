@@ -194,7 +194,7 @@ void ZoomOutCamera()
 		return;
 
 	// To zoom out the camera, increase the Z eye distance.
-	if (Camera_fEye[2] >= Camera_fZZoomStart)
+	if (Camera_fEye[2] >= Camera_fZZoomOutStop)
 	{
 		Camera_bDoneCameraZoomOut = true;
 	}

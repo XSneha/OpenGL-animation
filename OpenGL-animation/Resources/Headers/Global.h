@@ -43,9 +43,9 @@
 #define MODEL_Y_TRANSLATE	0.0f	//Y translation of Model
 #define MODEL_Z_TRANSLATE	-6.0f	//Z translation of MOdel
 
-#define MODEL_X_SCALE_FACTOR	1.2f	//X scale factor of Model
-#define MODEL_Y_SCALE_FACTOR	1.2f	//Y scale factor of Model
-#define MODEL_Z_SCALE_FACTOR	1.2f	//Z scale factor of Model
+#define MODEL_X_SCALE_FACTOR	0.2f	//X scale factor of Model
+#define MODEL_Y_SCALE_FACTOR	0.2f	//Y scale factor of Model
+#define MODEL_Z_SCALE_FACTOR	0.2f	//Z scale factor of Model
 
 #define START_ENGLE_POS			0.0f		//Marks beginning angle positionof rotation
 #define END_ENGLE_POS			360.0f		//Marks terminating angle position rotation
@@ -87,6 +87,7 @@ extern const GLfloat Camera_fZZoomEnd;
 extern const GLfloat Camera_fZZoomStart;
 extern const GLfloat Camera_fDeltaEyeAngle;
 extern const GLfloat Camera_fZoomInDistance;
+extern const GLfloat Camera_fZZoomOutStop;
 
 extern GLfloat Camera_fEye[3];
 extern GLfloat Camera_fCenter[3];
@@ -130,6 +131,7 @@ extern GLuint robot_texture;
 extern GLuint robot_texture_dark;
 extern GLuint robot_body;
 extern GLuint robot_face;
+extern GLuint sky_texture;
 
 //model loading variales / functions
 
