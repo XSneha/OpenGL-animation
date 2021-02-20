@@ -1,4 +1,4 @@
-#include "Global.h"
+#include "Resources/Headers/Global.h"
 #define NORMAL_SPEED 0.001f
 #define SLOW_SPEED 0.0001f;
 #define MID 0.0f
@@ -129,7 +129,7 @@ void ScrollCurtainCall(void)
 {
 	//variable declarations
 	GLfloat fYAxisPosition = 1.0f;
-	GLfloat fXAxisPosition1 = -0.3;
+	GLfloat fXAxisPosition1 = -0.3f;
 	const GLfloat LINE_GAP = 0.25f;
 
 	//code

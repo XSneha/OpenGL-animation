@@ -1,4 +1,4 @@
-#include "Global.h"
+#include "Resources/Headers/Global.h"
 
 #define NORMAL_SPEED 0.01f
 #define SLOW_SPEED 0.006f;
@@ -96,8 +96,8 @@ void UpdateOpening(void)
 	if (gb_display_text == false && Camera_bDoneCameraZoomOut) {
 		gbRenderScene_01 = false;
 		//gbRenderScene_06 = true;
-		gbRenderScene_04 = true;
-
+		//gbRenderScene_04 = true;
+		gbRenderScene_02 = true;
 	}
 }
 

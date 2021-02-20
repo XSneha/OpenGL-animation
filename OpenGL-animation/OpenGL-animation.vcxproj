@@ -148,14 +148,20 @@
     <ClCompile Include="05-RobotAndNature.cpp" />
     <ClCompile Include="06-Closing.cpp" />
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="ModelBird.cpp" />
+    <ClCompile Include="ModelPlant.cpp" />
+    <ClCompile Include="ModelRobot.cpp" />
+    <ClCompile Include="ModelTree.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SourceModelLoading.cpp" />
+    <ClCompile Include="VectorImplementation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Global.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Resources\Headers\Global.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

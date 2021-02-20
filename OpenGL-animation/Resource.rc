@@ -1,4 +1,4 @@
-#include "resource.h"
+#include "Resources/Headers/resource.h"
 
 MYICON				ICON	Resources/app.ico
 BG_TEXTURE			BITMAP	Resources/Textures/background.bmp

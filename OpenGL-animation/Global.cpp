@@ -3,7 +3,7 @@
 #include <gl\GL.h>
 #include <gl\GLU.h>
 #include <math.h>
-#include "Global.h"
+#include "Resources/Headers/Global.h"
 
 #define M_PI       3.14159265358979323846   // pi
 #define DEGTORAD(x)		(GLfloat)(x * (M_PI / 180.0f))
@@ -21,6 +21,7 @@ GLfloat fZAxisPosition = 3.0f;
 GLuint nFontList = 0;
 HDC ghdc = NULL;
 HINSTANCE ghInstance = NULL;
+GLUquadric* quadric = NULL;
 
 /* Scene Transition Variables */
 bool gbRenderScene_01 = true;
@@ -44,7 +45,6 @@ void LoadTrack(LPCTSTR fileName, DWORD flag)
 	}
 	fprintf(gpFile, "track loaded sucessfully...\n");
 }
-
 
 // ZoomInCamera()
 void ZoomInCamera()
@@ -105,7 +105,6 @@ void SpinCamera()
 
 // CalculateUpVector()
 // Calculations done according to:
-// https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml
 void CalculateUpVector()
 {
 	// Function declarations

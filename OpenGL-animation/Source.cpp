@@ -1,4 +1,4 @@
-#include "Global.h"
+#include "Resources/Headers/Global.h"
 
 //global declarations
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -36,6 +36,12 @@ void InitalizeRobotS3(void);
 void InitalizeNatureS4(void);
 void InitializeClosing(void);
 
+//models main draw functions
+void DrawRobot();
+void DrawTree();
+void DrawBird();
+void DrawPlant();
+
 int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow)
 {
 	//function
@@ -53,7 +59,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 
 
 	//code
-	if (fopen_s(&gpFile, "log.txt", "w") != 0) 
+	if (fopen_s(&gpFile, "fLogs/Windowlog.txt", "w") != 0) 
 	{
 		MessageBox(NULL, TEXT("Failed to create error log file...!!!"), TEXT("Error"), MB_ICONERROR | MB_OK);
 		exit(0);
@@ -229,6 +235,7 @@ void Initialize()
 	void Resize(int, int);
 	bool LoadGLTexture(GLuint *, TCHAR []);
 	void InitalizeProject(void);
+	void LoadMeshData(const char *);	
 
 	//variables
 	PIXELFORMATDESCRIPTOR pfd;
@@ -313,6 +320,10 @@ void Initialize()
 	DeleteObject(hFont);
 
 	LoadTrack(TEXT("Resources/Sound/Stillness_Of_The_Lake.wav"), (SND_ASYNC | SND_FILENAME));
+
+	//Load models
+	LoadMeshData("Resources/Models/tree.obj");
+
 	//Project Initalize
 	InitalizeProject();
 
@@ -425,6 +436,8 @@ void Display()
 
 void Unitialize()
 {
+	void clean_vec_2d_int(vec_2d_int_t * *pp_vec);
+	void clean_vec_2d_float(vec_2d_float_t * *pp_vec);
 
 	//code
 	if (gbFullScreen == true)
@@ -465,4 +478,14 @@ void Unitialize()
 		fclose(gpFile);
 		gpFile = NULL;
 	}
+	
+	//Clean three vector of vector of floats containg cartesian,texture and normal coordinates
+	clean_vec_2d_float(&gp_vertices);
+	clean_vec_2d_float(&gp_texture);
+	clean_vec_2d_float(&gp_normals);
+
+	//Clean three vector of vector of integers containing face data
+	clean_vec_2d_int(&gp_face_tri);
+	clean_vec_2d_int(&gp_face_texture);
+	clean_vec_2d_int(&gp_face_normals);
 }

@@ -1,4 +1,4 @@
-#include "Global.h"
+#include "Resources/Headers/Global.h"
 
 void InitalizeNatureS4(void) {
 	LoadGLTextures(&bg_texture, MAKEINTRESOURCE(BG_TEXTURE));
