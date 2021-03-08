@@ -7,7 +7,6 @@
 static GLfloat fTransitUnit = 0.0f;
 bool zoom = false;
 
-/*Camera Variables*/
 // Adjust the multiplier to adjust the animation speed for objects
 const GLfloat Camera_fDeltaMultiplier = 5.5f;
 
@@ -36,16 +35,14 @@ COLOR cLightGold = { 1.0f, 0.8f, 0.0f };
 
 GLuint sky_texture;
 
-void InitializeOpening(void)
-{
+void InitializeOpening(void){
 	fprintf(gpFile, "Calling Opening initialize\n");
 	LoadGLTextures(&sky_texture, MAKEINTRESOURCE(SKY_TEXTURE));
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
-void DisplayOpening(void)
-{// Function Declarations
+void DisplayOpening(void){
+	// Function Declarations
 	void DrawRoom(void);
 	void DisplayText(void);
 
@@ -76,7 +73,6 @@ void DisplayOpening(void)
 
 void UpdateOpening(void)
 {
-
 	void ZoomInCamera(void);
 	void SpinCamera(void);
 	void AnimateScene(void);
@@ -146,18 +142,18 @@ void DrawRoom()
 	GLfloat start_bar = -1.0f;
 	for (int i = 0; i < 10; i++) {
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glVertex3f(start_bar * (i*0.1), 0.0f, -1.0f);
-		glVertex3f(start_bar * (i * 0.1) + 0.002, 0.0f, -1.0f);
-		glVertex3f(start_bar * (i * 0.1) + 0.002, -1.0f, -1.0f);
-		glVertex3f(start_bar * (i * 0.1), -1.0f, -1.0f);
+		glVertex3f(start_bar * (i*0.1f), 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f) + 0.002f, 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f) + 0.002f, -1.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f), -1.0f, -1.0f);
 	}
 	start_bar = 1.0f;
 	for (int i = 0; i < 10; i++) {
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glVertex3f(start_bar * (i * 0.1), 0.0f, -1.0f);
-		glVertex3f(start_bar * (i * 0.1) + 0.002, 0.0f, -1.0f);
-		glVertex3f(start_bar * (i * 0.1) + 0.002, -1.0f, -1.0f);
-		glVertex3f(start_bar * (i * 0.1), -1.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f), 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f) + 0.002f, 0.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f) + 0.002f, -1.0f, -1.0f);
+		glVertex3f(start_bar * (i * 0.1f), -1.0f, -1.0f);
 	}
 	glEnd();
 
@@ -253,38 +249,6 @@ void DrawRoom()
 		//DrawDoor();
 	}
 }
-
-/*
-void DrawDoor() {
-	//glScalef(40.0f, 20.0f, 20.0f);
-	//glTranslatef(0.0f, -0.3f, 0.0f);
-
-
-	glBegin(GL_QUADS);
-	//Door
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(-0.2f, 0.8f, 2.01f);
-	glVertex3f(-0.6f, 0.8f, 2.01f);
-	glVertex3f(-0.6f, -1.0f, 2.01f);
-	glVertex3f(-0.2f, -1.0f, 2.01f);
-
-	//Door Knob
-	glColor3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(-0.52f, -0.22f, 2.01f);
-	glVertex3f(-0.56f, -0.22f, 2.01f);
-	glVertex3f(-0.56f, -0.2f, 2.01f);
-	glVertex3f(-0.52f,-0.2f, 2.01f);
-
-	//Name Plate
-	glColor3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(-0.3f, 0.45f, 2.01f);
-	glVertex3f(-0.5f, 0.45f, 2.01f);
-	glVertex3f(-0.5f, 0.35f, 2.01f);
-	glVertex3f(-0.3f, 0.35f, 2.01f);
-
-	glEnd();
-}
-*/
 
 void DisplayText(void)
 {

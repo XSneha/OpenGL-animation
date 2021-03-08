@@ -8,4 +8,5 @@
 #define ROBOT_BODY_DARK 106
 #define ROBOT_FRONT 107
 #define SKY_TEXTURE 108
+#define FEATHER_TEXTURE 109
 

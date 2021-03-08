@@ -41,7 +41,7 @@
 
 #define MODEL_X_TRANSLATE	0.0f	//X translation of MOdel
 #define MODEL_Y_TRANSLATE	0.0f	//Y translation of Model
-#define MODEL_Z_TRANSLATE	-6.0f	//Z translation of MOdel
+#define MODEL_Z_TRANSLATE	-5.0f	//Z translation of MOdel
 
 #define MODEL_X_SCALE_FACTOR	0.2f	//X scale factor of Model
 #define MODEL_Y_SCALE_FACTOR	0.2f	//Y scale factor of Model
@@ -68,6 +68,7 @@ extern HINSTANCE ghInstance;
 extern FILE* g_fp_meshfile;
 
 /*Scene render seqence variable*/
+extern bool gbRenderScene_00;
 extern bool gbRenderScene_01;
 extern bool gbRenderScene_02;
 extern bool gbRenderScene_03;
@@ -132,6 +133,7 @@ extern GLuint robot_texture_dark;
 extern GLuint robot_body;
 extern GLuint robot_face;
 extern GLuint sky_texture;
+extern GLuint feather_texture;
 
 //model loading variales / functions
 
@@ -159,7 +161,14 @@ extern vec_2d_float_t* gp_texture;
 extern vec_2d_float_t* gp_normals;
 
 //vector of vector of int to hold index data int g_vertices
-extern vec_2d_int_t* gp_face_tri, * gp_face_texture, * gp_face_normals;
+//extern vec_2d_int_t* gp_face_tri, * gp_face_texture, * gp_face_normals;
+extern vec_2d_int_t* gp_face_tree, * gp_face_texture_tree, * gp_face_normals_tree;
+extern vec_2d_int_t* gp_face_bush, * gp_face_texture_bush, * gp_face_normals_bush;
+
+//sound control flags
+extern bool sound_traffic;
+extern bool sound_dream;
+extern bool sound_title;
 
 vec_2d_int_t* create_vec_2d_int(void);
 vec_2d_float_t* create_vec_2d_float(void);
@@ -168,5 +177,5 @@ void push_back_vec_2d_float(vec_2d_float_t* p_vec, float* p_arr);
 void clean_vec_2d_int(vec_2d_int_t** pp_vec);
 void clean_vec_2d_float(vec_2d_float_t** pp_vec);
 
-void LoadMeshData(const char* fileName);
+void LoadMeshData(const char* fileName, vec_2d_int_t**, vec_2d_int_t**, vec_2d_int_t**);
 

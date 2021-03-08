@@ -24,12 +24,17 @@ HINSTANCE ghInstance = NULL;
 GLUquadric* quadric = NULL;
 
 /* Scene Transition Variables */
+bool gbRenderScene_00 = false;
 bool gbRenderScene_01 = true;
 bool gbRenderScene_02 = false;
 bool gbRenderScene_03 = false;
 bool gbRenderScene_04 = false;
 bool gbRenderScene_05 = false;
 bool gbRenderScene_06 = false;
+
+bool sound_traffic = false;
+bool sound_dream = false;
+bool sound_title = true;
 
 void LoadTrack(LPCTSTR fileName, DWORD flag)
 {

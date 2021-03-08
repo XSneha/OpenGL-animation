@@ -12,6 +12,7 @@ bool gdActiveWindow = false;
 HGLRC ghrc = NULL;
 
 //Display Function Declaration
+void DisplayTitle(void);
 void DisplayOpening(void);
 void DisplayBirdS1(void);
 void DisplayRobotS2(void); // walkig on street
@@ -21,6 +22,7 @@ void DisplayClosing(void);
 
 //Update Function Declaration
 void Update(void);
+void UpdateTitle(void);
 void UpdateOpening(void);
 void UpdateBirdS1(void);
 void UpdateRobotS2(void);
@@ -29,6 +31,7 @@ void UpdateNatureS4(void);
 void UpdateClosing(void);
 
 //Initalize Function Declaration
+void InitializeTitle(void);
 void InitializeOpening(void);
 void InitializeBirdS1(void);
 void InitalizeRobotS2(void);
@@ -42,8 +45,7 @@ void DrawTree();
 void DrawBird();
 void DrawPlant();
 
-int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow)
-{
+int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow){
 	//function
 	void Initialize(void);
 	void ToggleFullScreen(void);
@@ -59,13 +61,11 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 
 
 	//code
-	if (fopen_s(&gpFile, "fLogs/Windowlog.txt", "w") != 0) 
-	{
+	if (fopen_s(&gpFile, "fLogs/Windowlog.txt", "w") != 0) {
 		MessageBox(NULL, TEXT("Failed to create error log file...!!!"), TEXT("Error"), MB_ICONERROR | MB_OK);
 		exit(0);
 	}
-	else
-	{
+	else{
 		fprintf(gpFile, "file created\n");
 	}
 
@@ -121,24 +121,18 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	ToggleFullScreen();
 
 	//game loop
-	while (pDone == false)
-	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			if (msg.message == WM_QUIT)
-			{
+	while (pDone == false){
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)){
+			if (msg.message == WM_QUIT){
 				pDone = true;
 			}
-			else
-			{
+			else{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
 		}
-		else
-		{
-			if (gdActiveWindow == true)
-			{
+		else{
+			if (gdActiveWindow == true){
 				//call display function for open GL renering
 				Display();
 				//call update function for open GL renering
@@ -149,8 +143,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	return((int)msg.wParam);
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam){
 	//local function declaration
 	void ToggleFullScreen();
 	void Resize(int, int);
@@ -175,8 +168,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_KEYDOWN:
-		switch (wParam)
-		{
+		switch (wParam){
 		case VK_ESCAPE:
 			DestroyWindow(hwnd);
 			break;
@@ -199,19 +191,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 	return(DefWindowProc(hwnd, iMsg, wParam, lParam));
 }
 
-void ToggleFullScreen()
-{
+void ToggleFullScreen(){
 	//variable declerations
 	MONITORINFO mi = { sizeof(MONITORINFO) };
 
 	//code
-	if (gbFullScreen == false)
-	{
+	if (gbFullScreen == false){
 		dwStyle = GetWindowLong(ghwnd, GWL_STYLE);
-		if (dwStyle & WS_OVERLAPPEDWINDOW)
-		{
-			if (GetWindowPlacement(ghwnd, &wpPrev) && GetMonitorInfo(MonitorFromWindow(ghwnd, MONITORINFOF_PRIMARY), &mi))
-			{
+		if (dwStyle & WS_OVERLAPPEDWINDOW){
+			if (GetWindowPlacement(ghwnd, &wpPrev) && GetMonitorInfo(MonitorFromWindow(ghwnd, MONITORINFOF_PRIMARY), &mi)){
 				SetWindowLong(ghwnd, GWL_STYLE, (dwStyle & ~WS_OVERLAPPEDWINDOW));
 				SetWindowPos(ghwnd, HWND_TOP, mi.rcMonitor.left, mi.rcMonitor.top, mi.rcMonitor.right - mi.rcMonitor.left, mi.rcMonitor.bottom - mi.rcMonitor.top, SWP_FRAMECHANGED | SWP_NOZORDER);
 			}
@@ -219,8 +207,7 @@ void ToggleFullScreen()
 		ShowCursor(FALSE);
 		gbFullScreen = true;
 	}
-	else
-	{
+	else{
 		SetWindowLong(ghwnd, GWL_STYLE, (dwStyle | WS_OVERLAPPEDWINDOW));
 		SetWindowPlacement(ghwnd, &wpPrev);
 		SetWindowPos(ghwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOSIZE);
@@ -229,8 +216,7 @@ void ToggleFullScreen()
 	}
 }
 
-void Initialize()
-{
+void Initialize(){
 	//function declaration
 	void Resize(int, int);
 	bool LoadGLTexture(GLuint *, TCHAR []);
@@ -261,27 +247,23 @@ void Initialize()
 
 	iPixelFormatIndex = ChoosePixelFormat(ghdc, &pfd);
 
-	if (iPixelFormatIndex == 0)
-	{
+	if (iPixelFormatIndex == 0){
 		fprintf(gpFile, "error in ChoosePixelFormat");
 		DestroyWindow(ghwnd);
 	}
 
-	if (SetPixelFormat(ghdc, iPixelFormatIndex, &pfd) == FALSE)
-	{
+	if (SetPixelFormat(ghdc, iPixelFormatIndex, &pfd) == FALSE){
 		fprintf(gpFile, "error in SetPixelFormat");
 		DestroyWindow(ghwnd);
 	}
 
 	ghrc = wglCreateContext(ghdc);
-	if (ghrc == NULL)
-	{
+	if (ghrc == NULL){
 		fprintf(gpFile, "error in wglCreateContext");
 		DestroyWindow(ghwnd);
 	}
 
-	if (wglMakeCurrent(ghdc, ghrc) == FALSE)
-	{
+	if (wglMakeCurrent(ghdc, ghrc) == FALSE){
 		fprintf(gpFile, "error in wglMakeCurrent");
 		DestroyWindow(ghwnd);
 	}
@@ -319,11 +301,16 @@ void Initialize()
 	wglUseFontBitmaps(ghdc, 0, 128, nFontList);
 	DeleteObject(hFont);
 
-	LoadTrack(TEXT("Resources/Sound/Stillness_Of_The_Lake.wav"), (SND_ASYNC | SND_FILENAME));
+	if (sound_traffic) {
+		LoadTrack(TEXT("Resources/Sound/traffic.wav"), (SND_ASYNC | SND_FILENAME));
+	}if (sound_dream) {
+		LoadTrack(TEXT("Resources/Sound/song.wav"), (SND_ASYNC | SND_FILENAME));
+	}if (sound_title) {
+		LoadTrack(TEXT("Resources/Sound/title.wav"), (SND_ASYNC | SND_FILENAME));
+	}
 
 	//Load models
-	LoadMeshData("Resources/Models/tree.obj");
-
+	//LoadMeshData("Resources/Models/tree.obj");
 	//Project Initalize
 	InitalizeProject();
 
@@ -331,8 +318,8 @@ void Initialize()
 }
 
 
-void InitalizeProject(void)
-{
+void InitalizeProject(void){
+	InitializeTitle();
 	//initializing all scenes
 	InitializeOpening();
 	InitializeBirdS1();
@@ -343,8 +330,7 @@ void InitalizeProject(void)
 }
 
 
-void Resize(int width, int height)
-{
+void Resize(int width, int height){
 	//Local Variables
 	GLfloat fovy = 45.0f;
 	GLfloat fAspectRatio = (GLfloat)width / (GLfloat)height;
@@ -372,76 +358,60 @@ void Resize(int width, int height)
 	fWindowLeft = -fWindowRight;
 }
 
-void Update(void)
-{
-	if (gbRenderScene_01)
-	{
+void Update(void){
+	if (gbRenderScene_01){
 		UpdateOpening();
 	}
-	else if (gbRenderScene_02)
-	{
+	else if (gbRenderScene_02){
 		UpdateBirdS1();
 	}
-	else if (gbRenderScene_03)
-	{
+	else if (gbRenderScene_03){
 		UpdateRobotS2();
 	}
-	else if (gbRenderScene_04)
-	{
+	else if (gbRenderScene_04){
 		UpdateRobotS3();
 	}
-	else if (gbRenderScene_05)
-	{
+	else if (gbRenderScene_05){
 		UpdateNatureS4();
 	}
-
-	else if (gbRenderScene_06)
-	{
+	else if (gbRenderScene_06){
 		UpdateClosing();
 	}
 }
 
-void Display()
-{
+void Display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (gbRenderScene_01)
-	{
+	if (gbRenderScene_00) {
+		DisplayTitle();
+	}
+	if (gbRenderScene_01){
 		DisplayOpening();
 	}
-	else if (gbRenderScene_02)
-	{
+	else if (gbRenderScene_02){
 		DisplayBirdS1();
 	}
-	else if (gbRenderScene_03)
-	{
+	else if (gbRenderScene_03){
 		DisplayRobotS2();
 	}
-	else if (gbRenderScene_04)
-	{
+	else if (gbRenderScene_04){
 		DisplayRobotS3();
 	}
-	else if (gbRenderScene_05)
-	{
+	else if (gbRenderScene_05){
 		DisplayNatureS4();
 	}
-
-	else if (gbRenderScene_06)
-	{
+	else if (gbRenderScene_06){
 		DisplayClosing();
 	}
 	
 	SwapBuffers(ghdc);
 }
 
-void Unitialize()
-{
+void Unitialize(){
 	void clean_vec_2d_int(vec_2d_int_t * *pp_vec);
 	void clean_vec_2d_float(vec_2d_float_t * *pp_vec);
 
 	//code
-	if (gbFullScreen == true)
-	{
+	if (gbFullScreen == true){
 		SetWindowLong(ghwnd, GWL_STYLE, (dwStyle | WS_OVERLAPPEDWINDOW));
 		SetWindowPlacement(ghwnd, &wpPrev);
 		SetWindowPos(ghwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOSIZE);
@@ -454,26 +424,23 @@ void Unitialize()
 	glDeleteTextures(1, &robot_face);
 	glDeleteTextures(1, &robot_texture);
 	glDeleteTextures(1, &robot_texture_dark);
+	glDeleteTextures(1, &feather_texture);
 
-	if (wglGetCurrentContext() == ghrc)
-	{
+	if (wglGetCurrentContext() == ghrc){
 		wglMakeCurrent(NULL, NULL);
 	}
 
-	if (ghrc)
-	{
+	if (ghrc){
 		wglDeleteContext(ghrc);
 		ghrc = NULL;
 	}
 
-	if (ghdc)
-	{
+	if (ghdc){
 		ReleaseDC(ghwnd, ghdc);
 		ghdc = NULL;
 	}
 
-	if (gpFile)
-	{
+	if (gpFile){
 		fprintf(gpFile, "closed");
 		fclose(gpFile);
 		gpFile = NULL;
@@ -485,7 +452,11 @@ void Unitialize()
 	clean_vec_2d_float(&gp_normals);
 
 	//Clean three vector of vector of integers containing face data
-	clean_vec_2d_int(&gp_face_tri);
-	clean_vec_2d_int(&gp_face_texture);
-	clean_vec_2d_int(&gp_face_normals);
+	clean_vec_2d_int(&gp_face_tree);
+	clean_vec_2d_int(&gp_face_texture_tree);
+	clean_vec_2d_int(&gp_face_normals_tree);
+
+	clean_vec_2d_int(&gp_face_bush);
+	clean_vec_2d_int(&gp_face_texture_bush);
+	clean_vec_2d_int(&gp_face_normals_bush);
 }

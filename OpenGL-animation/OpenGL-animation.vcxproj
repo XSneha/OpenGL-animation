@@ -141,12 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="00-Title.cpp" />
     <ClCompile Include="01-Opening.cpp" />
-    <ClCompile Include="02-BirdAndWindow.cpp" />
-    <ClCompile Include="03-RobotOnStreet.cpp" />
-    <ClCompile Include="04-RobotAndCitiBackground.cpp" />
-    <ClCompile Include="05-RobotAndNature.cpp" />
+    <ClCompile Include="02-Scene_2.cpp" />
+    <ClCompile Include="03-Scene_3.cpp" />
+    <ClCompile Include="04-Scene_4.cpp" />
+    <ClCompile Include="05-Scene_5.cpp" />
     <ClCompile Include="06-Closing.cpp" />
+    <ClCompile Include="Feather.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="ModelBird.cpp" />
     <ClCompile Include="ModelPlant.cpp" />

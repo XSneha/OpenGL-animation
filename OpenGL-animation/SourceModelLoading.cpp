@@ -15,9 +15,9 @@ vec_2d_float_t* gp_texture;
 vec_2d_float_t* gp_normals;
 
 //vector of vector of int to hold index data int g_vertices
-vec_2d_int_t* gp_face_tri, * gp_face_texture, * gp_face_normals;
+//vec_2d_int_t* gp_face_tri, * gp_face_texture, * gp_face_normals;
 
-void LoadMeshData(const char * fileName)
+void LoadMeshData(const char * fileName, vec_2d_int_t** gp_face_tri, vec_2d_int_t** gp_face_texture, vec_2d_int_t** gp_face_normals)
 {
 	//Function prototype Release and destory resources
 	void Unitialize(void);
@@ -55,9 +55,9 @@ void LoadMeshData(const char * fileName)
 
 	//Instantiate three vector of vector of integers to hold face data regarding cartesian
 	//texture and normal coordinates
-	gp_face_tri = create_vec_2d_int();
-	gp_face_texture = create_vec_2d_int();
-	gp_face_normals = create_vec_2d_int();
+	*gp_face_tri = create_vec_2d_int();
+	*gp_face_texture = create_vec_2d_int();
+	*gp_face_normals = create_vec_2d_int();
 
 	//Separator strings
 	//String holding space separator for strtok
@@ -101,13 +101,13 @@ void LoadMeshData(const char * fileName)
 			//Create a vector of NR_POINT_COORDS number of floats to hold coordinates
 			GLfloat* pvec_point_coord = (GLfloat*)xcalloc(NR_POINT_COORDS, sizeof(GLfloat));
 
-			/*
-				Do following NR_POINT_COORD time
-				S1 : get next token
-				S2 : free it to atof to get floating point number out of it
-				S3 : Add floating point number generated to vector end of loop
-				S4 : At the end of loop vector is construced,add it to global vector of vector of floats, named gp_vertices
-			*/
+			
+			//	Do following NR_POINT_COORD time
+			//	S1 : get next token
+			//	S2 : free it to atof to get floating point number out of it
+			//	S3 : Add floating point number generated to vector end of loop
+			//	S4 : At the end of loop vector is construced,add it to global vector of vector of floats, named gp_vertices
+			
 			for (int i = 0; i != NR_POINT_COORDS; i++)
 			{
 				pvec_point_coord[i] = (GLfloat)atof(strtok_s(NULL, sep_space, &next_token1)); //S1,S2,S3
@@ -119,17 +119,17 @@ void LoadMeshData(const char * fileName)
 		else if (strcmp(first_token, "vt") == S_EQUAL)
 		{
 			GLfloat* pvec_texture_coord = (GLfloat*)xcalloc(NR_TEXTURE_COORDS, sizeof(GLfloat));
-			/*
-				Do following NR_TEXTURE_COORD time
-				S1 : Get next token
-				S2 : Feed it to atof to get floating point number out of it
-				S3 : Add the floating point number generated to vector End of looop
-				S4 : At the end of loop vector is constructed, add it to global vector of vector of floats nemed g_vertices
-			*/
+			
+			//	Do following NR_TEXTURE_COORD time
+			//	S1 : Get next token
+			//	S2 : Feed it to atof to get floating point number out of it
+			//	S3 : Add the floating point number generated to vector End of looop
+			//	S4 : At the end of loop vector is constructed, add it to global vector of vector of floats nemed g_vertices
+			
 
 			for (int i = 0; i != NR_TEXTURE_COORDS; i++)
 			{
-				pvec_texture_coord[i] = atof(strtok_s(NULL, sep_space, &next_token1)); //S1,S2,S3
+				pvec_texture_coord[i] = (GLfloat)atof(strtok_s(NULL, sep_space, &next_token1)); //S1,S2,S3
 			}
 			push_back_vec_2d_float(gp_texture, pvec_texture_coord);
 		}
@@ -138,13 +138,13 @@ void LoadMeshData(const char * fileName)
 		else if (strcmp(first_token, "vn") == S_EQUAL)
 		{
 			GLfloat* pvec_normal_coord = (GLfloat*)xcalloc(NR_NORMAL_COORDS, sizeof(GLfloat));
-			/*
-				Do following NR_NORMAL_COORDS time
-				S1 : Get next token
-				S2 : Feed it to atof to get to floating point number out of it
-				S3 : Add the floating point number generated to vector end of loop
-				S4 : At the end of loop vector is constructed add it to globla vector of vector of floats, named g_vertices
-			*/
+			
+			//	Do following NR_NORMAL_COORDS time
+			//	S1 : Get next token
+			//	S2 : Feed it to atof to get to floating point number out of it
+			//	S3 : Add the floating point number generated to vector end of loop
+			//	S4 : At the end of loop vector is constructed add it to globla vector of vector of floats, named g_vertices
+			
 
 			for (int i = 0; i != NR_NORMAL_COORDS; i++)
 			{
@@ -156,9 +156,9 @@ void LoadMeshData(const char * fileName)
 		//if first token indicates face data
 		else if (strcmp(first_token, "f") == S_EQUAL)
 		{
-			/*Define three vector of integers with length 3 to holds indicates of
-			trinagle's positional coordinates texture coordinates and normal
-			coordinates in g_vertices, g_texture,g_normals resp.*/
+			//Define three vector of integers with length 3 to holds indicates of
+			//trinagle's positional coordinates texture coordinates and normal
+			//coordinates in g_vertices, g_texture,g_normals resp.
 			GLint* pvec_vertex_indices = (GLint*)xcalloc(3, sizeof(GLint));
 			GLint* pvec_texture_indices = (GLint*)xcalloc(3, sizeof(GLint));
 			GLint* pvec_normal_indices = (GLint*)xcalloc(3, sizeof(GLint));
@@ -175,15 +175,15 @@ void LoadMeshData(const char * fileName)
 				face_tokens[nr_tokens] = token;
 				nr_tokens++;
 			}
-			/*
-				Every face data entry is going to have minimum three fields
-				therefore, construct a triangle out of it with
-				S1 : triangle coordinate data and
-				S2 : texture coordinate index data
-				S3 : normal coordinate index data
-				S4 : put that data in triangle_vertex_indices,texture_vertex_indices,
-					normal_vertex_indices.vectors will be constructed at the end of the loop
-			*/
+			
+			//	Every face data entry is going to have minimum three fields
+			//	therefore, construct a triangle out of it with
+			//	S1 : triangle coordinate data and
+			//	S2 : texture coordinate index data
+			//	S3 : normal coordinate index data
+			//	S4 : put that data in triangle_vertex_indices,texture_vertex_indices,
+			//		normal_vertex_indices.vectors will be constructed at the end of the loop
+			
 			for (int i = 0; i != NR_FACE_TOKENS; i++)
 			{
 				token_vertex_index = strtok_s(face_tokens[i], sep_fslash, &next_token1); //S1
@@ -196,13 +196,13 @@ void LoadMeshData(const char * fileName)
 			}
 
 			//Add constructed vectors to global face vectors
-			push_back_vec_2d_int(gp_face_tri, pvec_vertex_indices);
-			push_back_vec_2d_int(gp_face_texture, pvec_texture_indices);
-			push_back_vec_2d_int(gp_face_normals, pvec_normal_indices);
+			push_back_vec_2d_int(*gp_face_tri, pvec_vertex_indices);
+			push_back_vec_2d_int(*gp_face_texture, pvec_texture_indices);
+			push_back_vec_2d_int(*gp_face_normals, pvec_normal_indices);
 		}
 
 		//Initialize line buffer to NULL
-		memset((void*)g_line, (int)"\0", BUFFER_SIZE);
+		memset((void*)g_line,(int)"\0", BUFFER_SIZE);
 	}
 
 	//Close meshfile and make file pointer NULL.
@@ -212,3 +212,5 @@ void LoadMeshData(const char * fileName)
 	//log vertex texture and face data in log file
 	//fprintf(g_fp_logfile, "gp_vertices->size,gp_normals->size,gp_face_tri->size");
 }
+
+
