@@ -319,8 +319,8 @@ void Initialize(){
 
 
 void InitalizeProject(void){
-	InitializeTitle();
 	//initializing all scenes
+	InitializeTitle();
 	InitializeOpening();
 	InitializeBirdS1();
 	InitalizeRobotS2();
@@ -359,7 +359,10 @@ void Resize(int width, int height){
 }
 
 void Update(void){
-	if (gbRenderScene_01){
+	if (gbRenderScene_00) {
+		UpdateTitle();
+	}
+	else if (gbRenderScene_01){
 		UpdateOpening();
 	}
 	else if (gbRenderScene_02){

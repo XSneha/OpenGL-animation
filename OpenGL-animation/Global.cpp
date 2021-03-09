@@ -24,8 +24,8 @@ HINSTANCE ghInstance = NULL;
 GLUquadric* quadric = NULL;
 
 /* Scene Transition Variables */
-bool gbRenderScene_00 = false;
-bool gbRenderScene_01 = true;
+bool gbRenderScene_00 = true;
+bool gbRenderScene_01 = false;
 bool gbRenderScene_02 = false;
 bool gbRenderScene_03 = false;
 bool gbRenderScene_04 = false;
@@ -152,6 +152,16 @@ void CalculateUpVector()
 	Camera_fUpVector[2] = S[0] * fDirection[1] - S[1] * fDirection[0];
 }
 
+void delay(int milliseconds)
+{
+	long pause;
+	clock_t now, then;
+
+	pause = milliseconds * (CLOCKS_PER_SEC / 1000);
+	now = then = clock();
+	while ((now - then) < pause)
+		now = clock();
+}
 
 // Normalize()
 GLfloat Normalize(GLfloat vec[])

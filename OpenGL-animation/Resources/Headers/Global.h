@@ -1,9 +1,10 @@
 #pragma once
 #include <stdio.h>
 #include <windows.h>
-#include <stdio.h>
+#include <stdlib.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
+#include <time.h>
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
@@ -18,6 +19,8 @@
 #pragma comment(lib,"kernel32.lib")
 #pragma comment(lib,"openGL32.lib")
 #pragma comment(lib,"glu32.lib")
+#pragma comment(lib,"Winmm.lib")
+
 // #pragma warning(disable : 4996)
 
 //Macro
@@ -178,4 +181,6 @@ void clean_vec_2d_int(vec_2d_int_t** pp_vec);
 void clean_vec_2d_float(vec_2d_float_t** pp_vec);
 
 void LoadMeshData(const char* fileName, vec_2d_int_t**, vec_2d_int_t**, vec_2d_int_t**);
+
+void delay(int milliseconds);
 
