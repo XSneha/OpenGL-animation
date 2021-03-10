@@ -17,9 +17,9 @@ const GLfloat Camera_fZZoomOutStop = 70.0f;
 const GLfloat Camera_fDeltaEyeAngle = 0.005f * Camera_fDeltaMultiplier;
 const GLfloat Camera_fZoomInDistance = 0.006f * Camera_fDeltaMultiplier;
 
-GLfloat Camera_fEye[3] = { 0.0f, 0.0f, 160.0f };
-GLfloat Camera_fCenter[3] = { 0.0f, 0.0f, 0.0f };
-GLfloat Camera_fUpVector[3] = { 0.0f, 1.0f, 0.0f };
+GLfloat cameraPos[3] = { 0.0f, 0.0f, 160.0f };
+GLfloat cameraCenter[3] = { 0.0f, 0.0f, 0.0f };
+GLfloat cameraUpVec[3] = { 0.0f, 1.0f, 0.0f };
 
 static GLfloat doorAngle = 0.0f;
 /*Camera status variables*/
@@ -45,7 +45,8 @@ void DisplayOpening(void){
 	// Function Declarations
 	void DrawRoom(void);
 	void DisplayText(void);
-
+	void DrawRobot(void);
+	void floadArms();
 	//variables
 	static ULONGLONG timer = GetTickCount64();
 	ULONGLONG timer_end = GetTickCount64();
@@ -55,7 +56,7 @@ void DisplayOpening(void){
 	glLoadIdentity();
 
 	// Setup camera
-	gluLookAt(Camera_fEye[0], Camera_fEye[1], Camera_fEye[2], Camera_fCenter[0], Camera_fCenter[1], Camera_fCenter[2], Camera_fUpVector[0], Camera_fUpVector[1], Camera_fUpVector[2]);
+	gluLookAt(cameraPos[0], cameraPos[1], cameraPos[2], cameraCenter[0], cameraCenter[1], cameraCenter[2], cameraUpVec[0], cameraUpVec[1], cameraUpVec[2]);
 
 	// Draw the room
 	glPushMatrix();
@@ -63,9 +64,24 @@ void DisplayOpening(void){
 	if ((timer_end - timer) <= 4000) {
 		DisplayText();
 	}
-	else {
+	else if(!Camera_bDoneCameraZoomIn){
 		gb_display_text = false;
+		glPushMatrix();
+		//glScalef(50.0f, 30.0f, 30.0f);
 		DrawRoom();
+		glPopMatrix();
+		//glScalef(0.15f, 0.15f, 0.15f);
+		//glTranslatef(0.0f,-0.2f,-2.0f);
+		//DrawRobot();
+	}
+	else if (Camera_bDoneCameraZoomIn) {
+		glPushMatrix();
+		//glScalef(0.15f, 0.15f, 0.15f);
+		glTranslatef(0.0f,0.0f,5.0f);
+		glRotatef(90.0f,0.0f,1.0f,0.0f);
+		floadArms();
+		DrawRobot();
+		glPopMatrix();
 	}
 
 	glPopMatrix();
@@ -73,6 +89,7 @@ void DisplayOpening(void){
 
 void UpdateOpening(void)
 {
+	void walk();
 	void ZoomInCamera(void);
 	void SpinCamera(void);
 	void AnimateScene(void);
@@ -90,9 +107,28 @@ void UpdateOpening(void)
 	if (gb_display_text ==false && !Camera_bDoneCameraZoomIn) {
 		ZoomInCamera();
 	}
+	else if (gb_display_text == false && Camera_bDoneCameraZoomIn) {
+		//fprintf(gpFile, "!isFront angle increment: %f\n", legAngle);
 
-	if (gb_display_text == false && Camera_bDoneCameraZoomIn) {
-		ZoomOutCamera();
+		if (legAngle <= 0 && legAngle >= -30.0f && !isFront) {
+			fprintf(gpFile, "!isFront angle increment: %f\n", legAngle);
+
+			legAngle -= 0.2;
+			if (legAngle <= -30.0f) {
+				isFront = true;
+			}
+		}
+		else if (legAngle <= 0 && isFront) {
+			fprintf(gpFile, "isFront angle increment: %f\n", legAngle);
+
+			legAngle += 0.2;
+			if (legAngle >= 0.0f) {
+				isFront = false;
+				legAngle = 0.0f;
+			}
+		}
+		//walk();
+		//ZoomOutCamera();
 	}
 
 	if (gb_display_text == false && Camera_bDoneCameraZoomOut) {
@@ -103,6 +139,10 @@ void UpdateOpening(void)
 	}
 }
 
+
+void walk() {
+	
+}
 
 // DrawRoom()
 void DrawRoom()
@@ -216,14 +256,14 @@ void DrawRoom()
 
 		//floore outside the room
 		// Bottom
-		glColor3f(0.0f, 0.9f, 0.2f);
+		glColor3f(1.0f, 1.0f, 1.0f);
 		glVertex3f(2.0f, -1.0f, 2.0f);
 		glVertex3f(-2.0f, -1.0f, 2.0f);
 		glVertex3f(-2.0f, -1.0f, 3.0f);
 		glVertex3f(2.0f, -1.0f, 3.0f);
 
 		//roof outside the room
-		glColor3f(0.0f, 0.9f, 0.2f);
+		glColor3f(1.0f, 1.0f, 1.0f);
 		glVertex3f(2.0f, 1.5f, 2.0f);
 		glVertex3f(-2.0f, 1.5f, 2.0f);
 		glVertex3f(-2.0f, 1.5f, 3.0f);

@@ -93,9 +93,9 @@ extern const GLfloat Camera_fDeltaEyeAngle;
 extern const GLfloat Camera_fZoomInDistance;
 extern const GLfloat Camera_fZZoomOutStop;
 
-extern GLfloat Camera_fEye[3];
-extern GLfloat Camera_fCenter[3];
-extern GLfloat Camera_fUpVector[3];
+extern GLfloat cameraPos[3];
+extern GLfloat cameraCenter[3];
+extern GLfloat cameraUpVec[3];
 
 /*Camera status variables*/
 // Animation status variables
@@ -137,6 +137,8 @@ extern GLuint robot_body;
 extern GLuint robot_face;
 extern GLuint sky_texture;
 extern GLuint feather_texture;
+extern GLfloat legAngle;
+extern bool isFront;
 
 //model loading variales / functions
 
@@ -179,6 +181,9 @@ void push_back_vec_2d_int(vec_2d_int_t* p_vec, int* p_arr);
 void push_back_vec_2d_float(vec_2d_float_t* p_vec, float* p_arr);
 void clean_vec_2d_int(vec_2d_int_t** pp_vec);
 void clean_vec_2d_float(vec_2d_float_t** pp_vec);
+
+void floadArms();
+void walk();
 
 void LoadMeshData(const char* fileName, vec_2d_int_t**, vec_2d_int_t**, vec_2d_int_t**);
 

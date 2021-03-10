@@ -1,11 +1,14 @@
 #include "Resources/Headers/Global.h"
+#define NORMAL_SPEED 0.01f
 
 GLuint robot_texture;
 GLuint robot_texture_dark;
 GLuint robot_body;
 GLuint robot_face;
 
+GLfloat legAngle = -30.0f;
 int sholder, elbow, palm;
+bool isFront = false;
 
 void DrawRobot() {
 	void DrawArm(int side);
@@ -18,7 +21,6 @@ void DrawRobot() {
 	GLfloat facelength = 0.45f;
 
 	//torso
-
 	glPushMatrix();
 	//gluLookAt(camerapos[0], camerapos[1], camerapos[2], viewpos1[0], viewpos1[1], viewpos1[2], upVec[0], 1.0f, upVec[2]);
 	//glTranslatef(0.0f, 0.0f, -7.0f);
@@ -52,8 +54,19 @@ void DrawRobot() {
 	//control with keyword c+up,down,left,right and c+z : camera = child view
 }
 
+void floadArms() {
+	sholder = 30;
+	elbow = 60;
+}
+
 void DrawLegs() {
 	GLfloat legLength = 1.5f;
+
+	glPushMatrix();
+
+	glTranslatef(0.f, 1.5f, 0.0f);
+	glRotatef(legAngle, 1.0f, 0.0f, 0.0f);
+	glTranslatef(0.0f, -1.5f, 0.0f);
 	glPushMatrix();
 	glTranslatef(-0.4f, 1.5f, 0.0f);
 	glColor3f(0.184f, 0.310f, 0.310f);
@@ -66,9 +79,13 @@ void DrawLegs() {
 	glColor3f(0.416f, 0.353f, 0.804f);
 	quadric = gluNewQuadric();
 	gluSphere(quadric, 0.3f, 30, 30);
-
 	glPopMatrix();
-	glTranslatef(0.4f, 1.5f, 0.0f);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(0.f, 1.5f, 0.0f);
+	glRotatef(-legAngle, 1.0f, 0.0f, 0.0f);
+	glTranslatef(0.0f, -1.5f, 0.0f);	glTranslatef(0.4f, 1.5f, 0.0f);
 	glColor3f(0.184f, 0.310f, 0.310f);
 	glPushMatrix();
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
@@ -82,6 +99,8 @@ void DrawLegs() {
 	quadric = gluNewQuadric();
 	gluSphere(quadric, 0.3f, 30, 30);
 	glPopMatrix();
+	glPopMatrix();
+
 }
 
 void DrawNeck() {

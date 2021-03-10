@@ -7,6 +7,9 @@
 
 #define M_PI       3.14159265358979323846   // pi
 #define DEGTORAD(x)		(GLfloat)(x * (M_PI / 180.0f))
+
+#define NORMAL_SPEED 0.01f
+#define SLOW_SPEED 0.006f;
 /*Degree to radian converion for camera angle*/
 
 FILE* gpFile = NULL;
@@ -24,8 +27,8 @@ HINSTANCE ghInstance = NULL;
 GLUquadric* quadric = NULL;
 
 /* Scene Transition Variables */
-bool gbRenderScene_00 = true;
-bool gbRenderScene_01 = false;
+bool gbRenderScene_00 = false;
+bool gbRenderScene_01 = true;
 bool gbRenderScene_02 = false;
 bool gbRenderScene_03 = false;
 bool gbRenderScene_04 = false;
@@ -58,10 +61,10 @@ void ZoomInCamera()
 		return;
 
 	// To zoom in the camera, reduce the Z eye distance.
-	if (Camera_fEye[2] <= Camera_fZZoomEnd)
+	if (cameraPos[2] <= Camera_fZZoomEnd)
 		Camera_bDoneCameraZoomIn = true;
 
-	Camera_fEye[2] -= Camera_fZoomInDistance;
+	cameraPos[2] -= SLOW_SPEED;
 }
 
 
@@ -101,9 +104,9 @@ void SpinCamera()
 		fEyeAnglePhi += Camera_fDeltaEyeAngle;
 
 	// Set eye position
-	Camera_fEye[0] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * cosf(DEGTORAD(fEyeAnglePhi));
-	Camera_fEye[1] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * sinf(DEGTORAD(fEyeAnglePhi));
-	Camera_fEye[2] = fRadius * cosf(DEGTORAD(fEyeAngleTheta));
+	cameraPos[0] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * cosf(DEGTORAD(fEyeAnglePhi));
+	cameraPos[1] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * sinf(DEGTORAD(fEyeAnglePhi));
+	cameraPos[2] = fRadius * cosf(DEGTORAD(fEyeAngleTheta));
 
 	CalculateUpVector();
 }
@@ -121,9 +124,10 @@ void CalculateUpVector()
 	GLfloat fMagnitude;
 
 	// Code
-	fDirection[0] = Camera_fCenter[0] - Camera_fEye[0];
-	fDirection[1] = Camera_fCenter[1] - Camera_fEye[1];
-	fDirection[2] = Camera_fCenter[2] - Camera_fEye[2];
+	fDirection[0] = cameraCenter[0] - cameraPos[0];
+	fDirection[0] = cameraCenter[0] - cameraPos[0];
+	fDirection[1] = cameraCenter[1] - cameraPos[1];
+	fDirection[2] = cameraCenter[2] - cameraPos[2];
 
 	fMagnitude = Normalize(fDirection);
 
@@ -131,15 +135,15 @@ void CalculateUpVector()
 	fDirection[1] /= fMagnitude;
 	fDirection[2] /= fMagnitude;
 
-	fMagnitude = Normalize(Camera_fUpVector);
+	fMagnitude = Normalize(cameraUpVec);
 
-	Camera_fUpVector[0] /= fMagnitude;
-	Camera_fUpVector[1] /= fMagnitude;
-	Camera_fUpVector[2] /= fMagnitude;
+	cameraUpVec[0] /= fMagnitude;
+	cameraUpVec[1] /= fMagnitude;
+	cameraUpVec[2] /= fMagnitude;
 
-	S[0] = fDirection[1] * Camera_fUpVector[2] - fDirection[2] * Camera_fUpVector[1];
-	S[1] = fDirection[2] * Camera_fUpVector[0] - fDirection[0] * Camera_fUpVector[2];
-	S[2] = fDirection[0] * Camera_fUpVector[1] - fDirection[1] * Camera_fUpVector[0];
+	S[0] = fDirection[1] * cameraUpVec[2] - fDirection[2] * cameraUpVec[1];
+	S[1] = fDirection[2] * cameraUpVec[0] - fDirection[0] * cameraUpVec[2];
+	S[2] = fDirection[0] * cameraUpVec[1] - fDirection[1] * cameraUpVec[0];
 
 	fMagnitude = Normalize(S);
 
@@ -147,9 +151,9 @@ void CalculateUpVector()
 	S[1] /= fMagnitude;
 	S[2] /= fMagnitude;
 
-	Camera_fUpVector[0] = S[1] * fDirection[2] - S[2] * fDirection[1];
-	Camera_fUpVector[1] = S[2] * fDirection[0] - S[0] * fDirection[2];
-	Camera_fUpVector[2] = S[0] * fDirection[1] - S[1] * fDirection[0];
+	cameraUpVec[0] = S[1] * fDirection[2] - S[2] * fDirection[1];
+	cameraUpVec[1] = S[2] * fDirection[0] - S[0] * fDirection[2];
+	cameraUpVec[2] = S[0] * fDirection[1] - S[1] * fDirection[0];
 }
 
 void delay(int milliseconds)
@@ -191,9 +195,9 @@ void RotateCamera(void)
 		fEyeAnglePhi -= Camera_fDeltaEyeAngle;
 
 	// Set eye position
-	Camera_fEye[0] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * cosf(DEGTORAD(fEyeAnglePhi));
-	Camera_fEye[1] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * sinf(DEGTORAD(fEyeAnglePhi));
-	Camera_fEye[2] = fRadius * cosf(DEGTORAD(fEyeAngleTheta));
+	cameraPos[0] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * cosf(DEGTORAD(fEyeAnglePhi));
+	cameraPos[1] = fRadius * sinf(DEGTORAD(fEyeAngleTheta)) * sinf(DEGTORAD(fEyeAnglePhi));
+	cameraPos[2] = fRadius * cosf(DEGTORAD(fEyeAngleTheta));
 
 	CalculateUpVector();
 
@@ -209,12 +213,12 @@ void ZoomOutCamera()
 		return;
 
 	// To zoom out the camera, increase the Z eye distance.
-	if (Camera_fEye[2] >= Camera_fZZoomOutStop)
+	if (cameraPos[2] >= Camera_fZZoomOutStop)
 	{
 		Camera_bDoneCameraZoomOut = true;
 	}
 
-	Camera_fEye[2] += Camera_fZoomInDistance;
+	cameraPos[2] += Camera_fZoomInDistance;
 }
 
 

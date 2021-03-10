@@ -1,6 +1,6 @@
 #include "Resources/Headers/Global.h"
 
-#define FAST_SPEED 0.1f;
+#define FEATHER_SPEED 0.0001f;
 #define NORMAL_SPEED 0.01f
 #define SLOW_SPEED 0.00006f
 #define TOP 2.0f
@@ -10,6 +10,7 @@ GLuint feather_texture;
 GLfloat feather_angle = 0.0f;
 GLfloat feather_x = 0.0f;
 GLfloat feather_y = TOP;
+GLfloat feather_y2 = TOP - 0.2f;
 bool isUp = false;
 bool leafSettled = false;
 
@@ -20,19 +21,29 @@ void InitializeTitle(void) {
 }
 
 void DisplayTitle(void) {
+	void DrawFeather(void);
+
 	//glScalef(50.0f, 30.0f, 30.0f);
 	//
 	glMatrixMode(GL_MODELVIEW);
-	
+
 	glPushMatrix();
+//	glScalef(20.0f, 20.0f, 20.0f);
+	glTranslatef(feather_x + 1.0f, feather_y, -3.0f);
+	//	glTranslatef(0.0f,0.0f, -5.0f);
+	glRotatef(feather_angle-30, 0.0f, 0.0f, 1.0f);
+	DrawFeather();
+	glPopMatrix();
 
-	glLoadIdentity();
+	glPushMatrix();
+//	glScalef(20.0f, 20.0f, 20.0f);
+	glTranslatef(feather_x - 1.5f, feather_y2 - 0.5f, -3.0f);
+	//	glTranslatef(0.0f,0.0f, -5.0f);
+	glRotatef(feather_angle-30, 0.0f, 0.0f, 1.0f);	DrawFeather();
+	glPopMatrix();
+}
 
-	glScalef(20.0f, 20.0f, 20.0f);
-	glTranslatef(feather_x, feather_y, -5.0f);
-//	glTranslatef(0.0f,0.0f, -5.0f);
-
-	glRotatef(feather_angle,0.0f,0.0f,1.0f);
+void DrawFeather(void) {
 	
 	glBindTexture(GL_TEXTURE_2D, feather_texture);
 	glBegin(GL_QUADS);
@@ -48,31 +59,27 @@ void DisplayTitle(void) {
 	glVertex3f(-1.0f, -1.0f, 0.0f);
 	glEnd();
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glPopMatrix();
 }
 
 void UpdateTitle(void)
 {
 
 	if (isUp) {
-		feather_x += SLOW_SPEED;
+		feather_x += FEATHER_SPEED;
 	}
 	else {
-		feather_x -= SLOW_SPEED;
+		feather_x -= FEATHER_SPEED;
 	}
-	if (feather_angle <=0 && feather_angle >= -90.0f && !isUp) {
+	if (feather_angle <=0 && feather_angle >= -60.0f && !isUp) {
 		
 		feather_angle -= NORMAL_SPEED;
-		fprintf(gpFile, ">= 90 feather_angle >0 : %f\n", feather_angle);
-		if (feather_angle <= -90.0f ) {
+		if (feather_angle <= -60.0f ) {
 			isUp = true;
 		}
 	}
 	else if (feather_angle <=0  && isUp) {
 	
 		feather_angle += NORMAL_SPEED;
-		fprintf(gpFile, "<= -90 feather_angle < 0 : %f\n", feather_angle);
 		if (feather_angle >= 0.0f) {
 			isUp = false;
 			feather_angle = 0.0f;
@@ -81,6 +88,9 @@ void UpdateTitle(void)
 
 	if (feather_y > BOTTOM) {
 		feather_y -= SLOW_SPEED;
+	}
+	if (feather_y2 > BOTTOM) {
+		feather_y2 -= SLOW_SPEED;
 	}
 	else {
 		leafSettled = true;
