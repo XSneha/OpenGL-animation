@@ -55,8 +55,8 @@ void DrawRobot() {
 }
 
 void floadArms() {
-	sholder = 30;
-	elbow = 60;
+	sholder = -30;
+	elbow = -60;
 }
 
 void DrawLegs() {

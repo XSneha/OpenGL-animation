@@ -8,8 +8,8 @@ vec_2d_int_t* gp_face_bush, * gp_face_texture_bush, * gp_face_normals_bush;
 
 void InitalizeNatureS4(void) {
 	fprintf(gpFile, "Display Robot and nature S4\n");
-	LoadMeshData("Resources/Models/tree1.obj", &gp_face_tree, &gp_face_texture_tree, &gp_face_normals_tree);
-	LoadMeshData("Resources/Models/tree2.obj", &gp_face_bush, &gp_face_texture_bush, &gp_face_normals_bush);
+	LoadMeshData("Resources/Models/lpt.obj", &gp_face_tree, &gp_face_texture_tree, &gp_face_normals_tree);
+	//LoadMeshData("Resources/Models/tree2.obj", &gp_face_bush, &gp_face_texture_bush, &gp_face_normals_bush);
 }
 
 // Display robot watching beauty of nature
@@ -71,7 +71,7 @@ void DrawModelTree1() {
 			}
 			glEnd();
 		}
-		glColor3f(1.0f, 0.5f, 0.5f);
+		/*glColor3f(1.0f, 0.5f, 0.5f);
 		for (int i = 0; i != gp_face_bush->size; i++) {
 			glBegin(GL_TRIANGLES); //S2
 			for (int j = 0; j != NR_TRIANGLE_VERTICES; j++) {
@@ -80,7 +80,7 @@ void DrawModelTree1() {
 				glVertex3f(gp_vertices->pp_arr[vi][0], gp_vertices->pp_arr[vi][1], gp_vertices->pp_arr[vi][2]); //S5,S6
 			}
 			glEnd();
-		}
+		}*/
 	}
 	
 }

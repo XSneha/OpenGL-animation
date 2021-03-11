@@ -34,6 +34,7 @@ COLOR cDarkGold = { 0.9f, 0.7f, 0.0f };
 COLOR cLightGold = { 1.0f, 0.8f, 0.0f };
 
 GLuint sky_texture;
+GLfloat rotationAngle = 0.0f;
 
 void InitializeOpening(void){
 	fprintf(gpFile, "Calling Opening initialize\n");
@@ -46,6 +47,7 @@ void DisplayOpening(void){
 	void DrawRoom(void);
 	void DisplayText(void);
 	void DrawRobot(void);
+	void DrawPlant(void);
 	void floadArms();
 	//variables
 	static ULONGLONG timer = GetTickCount64();
@@ -75,12 +77,23 @@ void DisplayOpening(void){
 		//DrawRobot();
 	}
 	else if (Camera_bDoneCameraZoomIn) {
+
+		glPushMatrix();
+		glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
 		glPushMatrix();
 		//glScalef(0.15f, 0.15f, 0.15f);
 		glTranslatef(0.0f,0.0f,5.0f);
+		//glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
 		glRotatef(90.0f,0.0f,1.0f,0.0f);
 		floadArms();
 		DrawRobot();
+		glPopMatrix();
+		glPushMatrix();
+		glScalef(2.0f,2.0f,2.0f);
+//		glRotatef(rotationAngle, 0.0f, 1.0f, 0.0f);
+		glTranslatef(-1.2f, 2.0f, 0.0f);
+		DrawPlant();
+		glPopMatrix();
 		glPopMatrix();
 	}
 
@@ -91,11 +104,6 @@ void UpdateOpening(void)
 {
 	void walk();
 	void ZoomInCamera(void);
-	void SpinCamera(void);
-	void AnimateScene(void);
-	void AnimateSymbols(void);
-	void RotateCamera(void);
-	void ZoomOutCamera(void);
 
 	if (doorAngle <= 360.0f) {
 		doorAngle += 0.0001f;
@@ -109,7 +117,7 @@ void UpdateOpening(void)
 	}
 	else if (gb_display_text == false && Camera_bDoneCameraZoomIn) {
 		//fprintf(gpFile, "!isFront angle increment: %f\n", legAngle);
-
+		rotationAngle += NORMAL_SPEED;
 		if (legAngle <= 0 && legAngle >= -30.0f && !isFront) {
 			fprintf(gpFile, "!isFront angle increment: %f\n", legAngle);
 
